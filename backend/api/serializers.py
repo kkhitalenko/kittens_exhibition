@@ -10,14 +10,8 @@ class BreedSerializer(serializers.ModelSerializer):
 
 
 class KittenSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Kitten
-        fields = ('color', 'age', 'description', 'breed')
-
-
-class ReadOnlyKittenSerializer(serializers.ModelSerializer):
-    breed = BreedSerializer()
+    breed = serializers.SlugRelatedField(queryset=Breed.objects.all(),
+                                         slug_field='title')
 
     class Meta:
         model = Kitten

@@ -1,9 +1,6 @@
 from rest_framework import generics, viewsets
 
-from django_filters.rest_framework import DjangoFilterBackend
-
-from api.serializers import (BreedSerializer, KittenSerializer,
-                             ReadOnlyKittenSerializer)
+from api.serializers import BreedSerializer, KittenSerializer
 from kittens.models import Breed, Kitten
 
 
@@ -13,11 +10,10 @@ class BreedList(generics.ListAPIView):
 
 
 class KittenViewSet(viewsets.ModelViewSet):
-    queryset = Kitten.objects.all()
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('breed',)
+    serializer_class = KittenSerializer
 
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return ReadOnlyKittenSerializer
-        return KittenSerializer
+    def get_queryset(self):
+        breed = self.request.query_params.get('breed')
+        if breed is not None:
+            return Kitten.objects.filter(breed__title=breed)
+        return Kitten.objects.all()

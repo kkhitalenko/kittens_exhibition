@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'kittens.apps.KittensConfig',
     'drf_yasg',
-    'django_filters',
 ]
 
 MIDDLEWARE = [
