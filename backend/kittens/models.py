@@ -1,8 +1,15 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
+User = get_user_model()
+
+
 class Kitten(models.Model):
+    owner = models.ForeignKey(User,
+                              on_delete=models.CASCADE,
+                              related_name='kittens')
     color = models.CharField(max_length=50)
     age = models.IntegerField(validators=[MinValueValidator(1),
                                           MaxValueValidator(360)])
