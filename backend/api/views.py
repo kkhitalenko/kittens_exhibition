@@ -1,5 +1,6 @@
 from rest_framework import generics, viewsets
 
+from api.permissions import IsOwnerOrReadOnly
 from api.serializers import BreedSerializer, KittenSerializer
 from kittens.models import Breed, Kitten
 
@@ -11,9 +12,13 @@ class BreedList(generics.ListAPIView):
 
 class KittenViewSet(viewsets.ModelViewSet):
     serializer_class = KittenSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
     def get_queryset(self):
         breed = self.request.query_params.get('breed')
         if breed is not None:
             return Kitten.objects.filter(breed__title=breed)
         return Kitten.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
