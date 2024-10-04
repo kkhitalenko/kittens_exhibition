@@ -27,3 +27,18 @@ class Breed(models.Model):
 
     def __str__(self):
         return f'breed: {self.title}'
+
+
+class Rate(models.Model):
+    value = models.IntegerField(validators=[MinValueValidator(1),
+                                            MaxValueValidator(5)])
+    kitten = models.ForeignKey(Kitten,
+                               on_delete=models.CASCADE,
+                               related_name='rates')
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='rates')
+
+    class Meta:
+        constraints = [models.UniqueConstraint('kitten', 'user',
+                                               name='unique_user_kitten_rate')]
