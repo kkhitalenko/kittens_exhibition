@@ -26,12 +26,18 @@ REST API онлайн выставки котят
       ```
       docker-compose exec backend python manage.py migrate
       ```
+   5. Наполнить БД породами: 
+      ```
+      docker-compose exec -it postgres psql -U postgres -c "INSERT INTO kittens_breed (title) VALUES ('munchkin'), ('siamese'), ('sphynx');"
+      ```
+   6. Собрать статику
+      ```
+      docker-compose exec backend python manage.py collectstatic --no-input
+      ```
 
-   5. Если нужна админка:
+   7. Если нужна админка, создать суперпользователя:
       ```
       docker-compose exec backend python manage.py createsuperuser
-
-      docker-compose exec backend python manage.py collectstatic --no-input 
       ```
       Админка настроена и доступна по адресу 
          http://127.0.0.1/admin/
@@ -62,6 +68,7 @@ http://127.0.0.1/swagger/
 - Django, DRF
 - Swagger, drf_yasg
 - Gunicorn, Nginx
+- djoser, simplejwt
 - PostgreSQL
 - Docker, Docker Compose
 <!-- Pytest --> 
