@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from api.permissions import IsOwnerOrReadOnly
@@ -11,6 +12,7 @@ from kittens.models import Breed, Kitten, Rate, User
 class BreedList(generics.ListAPIView):
     queryset = Breed.objects.all()
     serializer_class = BreedSerializer
+    permission_classes = [AllowAny]
 
 
 class KittenViewSet(viewsets.ModelViewSet):
